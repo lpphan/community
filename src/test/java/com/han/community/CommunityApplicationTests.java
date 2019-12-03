@@ -1,4 +1,4 @@
-package com.han.community.community;
+package com.han.community;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
