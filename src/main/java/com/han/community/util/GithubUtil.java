@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.han.community.dto.AccessTokenDTO;
 import com.han.community.dto.GithubUser;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -12,9 +13,10 @@ import java.io.IOException;
 @Component
 public class GithubUtil {
 
-    private final String ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
-
-    private final String GET_GITHUB_USER_URL = "https://api.github.com/user?access_token=";
+    @Value("${github.accesstoken.access_token_url}")
+    private String ACCESS_TOKEN_URL;
+    @Value("${github.accesstoken.get_github_user_url}")
+    private String GET_GITHUB_USER_URL;
 
     /**
      * 获取access_token

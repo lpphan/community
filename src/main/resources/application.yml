@@ -2,6 +2,14 @@ server:
   port: 8887
   servlet:
     context-path: /
+#参数配置
+github:
+  accesstoken:
+    client_id: 2263f7d8276928e147d0
+    client_secret: 2abacbb12febb6e407a812811d8b30237e7b018a
+    redirect_uri: http://localhost:8887/callback
+    access_token_url: https://github.com/login/oauth/access_token
+    get_github_user_url: https://api.github.com/user?access_token=
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/community?characterEnconding=UTF8&socketTimeout=60000

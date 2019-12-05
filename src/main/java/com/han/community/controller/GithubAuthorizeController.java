@@ -4,6 +4,7 @@ import com.han.community.dto.AccessTokenDTO;
 import com.han.community.dto.GithubUser;
 import com.han.community.util.GithubUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,13 @@ import java.io.IOException;
  */
 @Controller
 public class GithubAuthorizeController {
-    private final String CLIENT_ID = "2263f7d8276928e147d0";
-    private final String CLIENT_SECRET = "2abacbb12febb6e407a812811d8b30237e7b018a";
-    private final String CALLBACK_URL = "http://localhost:8887/callback";
+
+    @Value("${github.accesstoken.client_id}")
+    private String CLIENT_ID;
+    @Value("${github.accesstoken.client_secret}")
+    private String CLIENT_SECRET;
+    @Value("${github.accesstoken.redirect_uri}")
+    private String CALLBACK_URL;
 
     @Autowired
     private GithubUtil githubUtil;
