@@ -2,6 +2,8 @@ package com.han.community.controller;
 
 import com.han.community.dto.AccessTokenDTO;
 import com.han.community.dto.GithubUser;
+import com.han.community.mapper.UserMapper;
+import com.han.community.model.User;
 import com.han.community.util.GithubUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * github跳转登录
@@ -27,13 +31,16 @@ public class GithubAuthorizeController {
 
     @Autowired
     private GithubUtil githubUtil;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * callback获取登录code
      */
     @RequestMapping("/callback")
     public String callBack(@RequestParam(name = "code")String code,
-                           @RequestParam(name = "state")String state, Model model) throws IOException {
+                           @RequestParam(name = "state")String state,
+                           HttpServletRequest request,Model model) throws IOException {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(CLIENT_ID);
         accessTokenDTO.setClient_secret(CLIENT_SECRET);
@@ -41,8 +48,22 @@ public class GithubAuthorizeController {
         accessTokenDTO.setRedirect_uri(CALLBACK_URL);
         accessTokenDTO.setState(state);
         String accessToken = githubUtil.getAccessToken(accessTokenDTO);//得到access_token
-        GithubUser user = githubUtil.getUser(accessToken);
-        System.out.println(user);
-        return "index";
+        GithubUser githubUser = githubUtil.getUser(accessToken);
+        //判断是否登录成功
+        if (githubUser != null) {
+            User user = new User();
+            user.setToken(UUID.randomUUID().toString());
+            user.setName(githubUser.getName());
+            user.setAccountId(githubUser.getId().toString());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+            userMapper.insert(user);
+            //成功
+            request.getSession().setAttribute("user",githubUser);//将user信息放入session中
+            return "redirect:/";//重定向到首页
+        }else {
+            //登录失败
+            return "redirect:/";//重定向到首页
+        }
     }
 }

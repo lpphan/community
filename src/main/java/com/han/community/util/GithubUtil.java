@@ -41,6 +41,11 @@ public class GithubUtil {
         }
     }
 
+    /**
+     * 获取github用户信息
+     * @param accessToken
+     * @return
+     */
     public GithubUser getUser(String accessToken){
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()

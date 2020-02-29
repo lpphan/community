@@ -12,10 +12,16 @@ github:
     get_github_user_url: https://api.github.com/user?access_token=
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/community?characterEnconding=UTF8&socketTimeout=60000
-    username: root
-    password: root
-    #password: 123456
+    #mysql
+#    url: jdbc:mysql://localhost:3306/community?characterEnconding=UTF8&socketTimeout=60000
+#    username: root
+#    #password: root
+#    password: 123456
+    #H2
+    url: jdbc:h2:~/community
+    username: sa
+    password: 123
+    driver-class-name: org.h2.Driver
 
   #thymeleaf视图解析器
 
