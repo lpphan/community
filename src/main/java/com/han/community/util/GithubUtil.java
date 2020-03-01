@@ -1,7 +1,6 @@
 package com.han.community.util;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.han.community.dto.AccessTokenDTO;
 import com.han.community.dto.GithubUser;
 import okhttp3.*;
@@ -24,7 +23,6 @@ public class GithubUtil {
     public String getAccessToken(AccessTokenDTO accessTokenDTO) throws IOException {
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
-        JSONObject jsonObject = new JSONObject();
         RequestBody body = RequestBody.create(mediaType,JSON.toJSONString(accessTokenDTO));
         Request request = new Request.Builder()
                 .url(ACCESS_TOKEN_URL)
